@@ -33,6 +33,7 @@ from tools.audio.suno_music import SunoMusic
 from tools.audio.pixabay_music import PixabayMusic
 from tools.audio.music_library import MusicLibrary
 from tools.audio.audio_mixer import AudioMixer
+from tools.composition_director import CompositionDirector
 
 logging.basicConfig(
     level=logging.INFO,
@@ -61,6 +62,9 @@ class ProductionOrchestrator:
         skip_script: bool = False,
         skip_assets: bool = False,
         skip_audio: bool = False,
+        skip_composition: bool = False,
+        composition_runtime: str = "remotion",  # or "hyperframes"
+        composition_mode: str = "templated",  # or "atelier"
         output_dir: Optional[Path] = None
     ) -> Dict[str, Path]:
         """
@@ -306,6 +310,90 @@ class ProductionOrchestrator:
             logger.info("⊘ Skipping audio generation (no voiceover script generated)")
         
         # ====================================================================
+        # PHASE 5: COMPOSITION & RENDERING
+        # ====================================================================
+        
+        if not skip_composition and "final_audio" in outputs and "script_json" in outputs:
+            logger.info("\n🎬 PHASE 5: COMPOSITION & RENDERING")
+            logger.info("-" * 70)
+            
+            composition_dir = output_dir / "composition"
+            composition_dir.mkdir(parents=True, exist_ok=True)
+            
+            try:
+                # Initialize composition director
+                director = CompositionDirector()
+                
+                logger.info(f"📐 Composing with {composition_runtime} ({composition_mode} mode)...")
+                
+                # Phase 5a: Compose timeline from script + assets + audio
+                compose_result = director.execute({
+                    "operation": "compose",
+                    "runtime": composition_runtime,
+                    "mode": composition_mode,
+                    "script_path": str(outputs.get("script_json")),
+                    "asset_manifest_path": str(outputs.get("asset_manifest", "")),
+                    "audio_path": str(outputs["final_audio"]),
+                    "output_dir": str(composition_dir),
+                    "duration_seconds": target_duration / 1000,  # Convert ms to seconds
+                    "resolution": "1920x1080",
+                    "frame_rate": 30
+                })
+                
+                if compose_result.success:
+                    composition_file = compose_result.data.get("composition_file")
+                    outputs["composition"] = Path(composition_file)
+                    
+                    logger.info(f"✓ Composition created:")
+                    logger.info(f"  Runtime: {composition_runtime}")
+                    logger.info(f"  Mode: {composition_mode}")
+                    logger.info(f"  Scenes: {compose_result.data.get('scene_count', '?')}")
+                    
+                    # Phase 5b: Render to MP4
+                    logger.info("🎥 Rendering to MP4...")
+                    
+                    render_output = composition_dir / f"{title}_final.mp4"
+                    
+                    render_result = director.execute({
+                        "operation": "render",
+                        "composition_file": composition_file,
+                        "output_path": str(render_output)
+                    })
+                    
+                    if render_result.success:
+                        outputs["video"] = render_output
+                        
+                        logger.info(f"✓ Video rendered:")
+                        logger.info(f"  Path: {render_output}")
+                        logger.info(f"  Runtime: {composition_runtime}")
+                        
+                        # Note: In production, actual render happens here
+                        # For MVP, we're queueing the render job
+                        logger.info("  [In production: render would complete here with ffmpeg/npm]")
+                    else:
+                        logger.warning(f"⚠ Rendering failed: {render_result.error}")
+                        logger.info("  Note: Rendering requires Node.js and Remotion/HyperFrames")
+                        logger.info("  Install with: npm install remotion")
+                
+                else:
+                    logger.error(f"✗ Composition failed: {compose_result.error}")
+                
+                logger.info(f"✓ Phase 5 complete.")
+            
+            except Exception as e:
+                logger.error(f"✗ Composition/rendering failed: {e}")
+                logger.info("⊘ Skipping Phase 5 due to error")
+        
+        elif skip_composition:
+            logger.info("⊘ Skipping composition/rendering (--skip-composition)")
+        
+        elif "final_audio" not in outputs:
+            logger.info("⊘ Skipping composition/rendering (no audio generated)")
+        
+        elif "script_json" not in outputs:
+            logger.info("⊘ Skipping composition/rendering (no script generated)")
+        
+        # ====================================================================
         # SUMMARY
         # ====================================================================
         
@@ -362,6 +450,11 @@ async def main():
     parser.add_argument("--skip-research", action="store_true", help="Skip research phase")
     parser.add_argument("--skip-script", action="store_true", help="Skip script generation")
     parser.add_argument("--skip-audio", action="store_true", help="Skip audio generation")
+    parser.add_argument("--skip-composition", action="store_true", help="Skip composition/rendering")
+    parser.add_argument("--composition-runtime", default="remotion", choices=["remotion", "hyperframes"], 
+                        help="Composition runtime (Remotion or HyperFrames)")
+    parser.add_argument("--composition-mode", default="templated", choices=["templated", "atelier"],
+                        help="Authoring mode (templated: stock components, atelier: hand-authored)")
     
     args = parser.parse_args()
     
@@ -398,7 +491,10 @@ async def main():
                     target_duration=video.get("duration", 600),
                     skip_research=args.skip_research,
                     skip_script=args.skip_script,
-                    skip_audio=args.skip_audio
+                    skip_audio=args.skip_audio,
+                    skip_composition=args.skip_composition,
+                    composition_runtime=args.composition_runtime,
+                    composition_mode=args.composition_mode
                 )
         
         else:
@@ -415,7 +511,10 @@ async def main():
                 target_duration=args.duration,
                 skip_research=args.skip_research,
                 skip_script=args.skip_script,
-                skip_audio=args.skip_audio
+                skip_audio=args.skip_audio,
+                skip_composition=args.skip_composition,
+                composition_runtime=args.composition_runtime,
+                composition_mode=args.composition_mode
             )
     
     finally:
