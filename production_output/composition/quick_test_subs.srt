@@ -1,0 +1,7 @@
+1
+00:00:00,000 --> 00:00:07,500
+This is a quick test of the OpenMontage pipeline.
+
+2
+00:00:07,500 --> 00:00:15,000
+It verifies narration and composition.

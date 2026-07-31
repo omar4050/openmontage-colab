@@ -1,0 +1,32 @@
+{
+  "runtime": "remotion",
+  "mode": "templated",
+  "duration_seconds": 15,
+  "fps": 30,
+  "resolution": "1920x1080",
+  "scenes": [
+    {
+      "id": "scene_0",
+      "type": "text_card",
+      "duration": 7.5,
+      "start_time": 0.0,
+      "text": "This is a quick test of the OpenMontage pipeline.",
+      "assets": [],
+      "transitions": "none"
+    },
+    {
+      "id": "scene_1",
+      "type": "text_card",
+      "duration": 7.5,
+      "start_time": 7.5,
+      "text": "It verifies narration and composition.",
+      "assets": [],
+      "transitions": "fade"
+    }
+  ],
+  "audio": "production_output\\audio\\quick_test_narration.wav",
+  "metadata": {
+    "script_path": "production_output\\scripts\\quick_test_script.json",
+    "asset_manifest_path": ""
+  }
+}

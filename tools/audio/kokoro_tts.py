@@ -121,8 +121,7 @@ class KokoroTTS(BaseTool):
                 return ToolResult(
                     success=False,
                     error="Kokoro TTS not installed. Install with: pip install kokoro-onnx",
-                    data={},
-                    status=ToolStatus.UNAVAILABLE,
+                    data={}
                 )
 
             # Initialize Kokoro engine
@@ -151,8 +150,7 @@ class KokoroTTS(BaseTool):
                         "cost_usd": 0.0,  # Open source, free
                         "voice": voice,
                         "speed": speed,
-                    },
-                    status=ToolStatus.COMPLETED,
+                    }
                 )
 
             except Exception as e:
