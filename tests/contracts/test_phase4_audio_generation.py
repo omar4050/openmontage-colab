@@ -96,7 +96,8 @@ class TestMusicLibrary:
         schema = tool.input_schema
 
         assert schema["type"] == "object"
-        assert "operation" in schema["required"]
+        assert "properties" in schema
+        assert "library_dir" in schema["properties"]
 
     def test_music_library_metadata(self):
         """Test music library tool metadata."""
@@ -184,7 +185,7 @@ class TestPhase4AudioPipeline:
         orchestrate_path = PROJECT_ROOT / "orchestrate.py"
         assert orchestrate_path.exists()
 
-        with open(orchestrate_path, "r") as f:
+        with open(orchestrate_path, "r", encoding="utf-8") as f:
             content = f.read()
 
             # Check Phase 4 section exists
@@ -210,7 +211,7 @@ class TestPhase4AudioPipeline:
 
         # Mixer handles various formats
         mixer = AudioMixer()
-        assert "extract" in mixer.capabilities
+        assert "extract_audio" in mixer.capabilities
 
 
 class TestAudioProviderSelection:

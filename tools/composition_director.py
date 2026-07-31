@@ -294,9 +294,7 @@ class CompositionDirector(BaseTool):
                     "mode": mode,
                     "scene_count": len(scene_plan),
                     "duration_seconds": audio_duration,
-                    "ready_for_render": True
-                },
-                metadata={
+                    "ready_for_render": True,
                     "stage": "composition_complete",
                     "next_step": f"render with {runtime} to MP4"
                 }

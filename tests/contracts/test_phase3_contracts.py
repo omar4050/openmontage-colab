@@ -685,6 +685,7 @@ class TestCapabilityMetadata:
             "elevenlabs",
             "google_tts",
             "kling_official",
+            "kokoro",
             "openai",
             "piper",
         }
