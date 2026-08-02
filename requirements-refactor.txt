@@ -1,0 +1,49 @@
+# Core dependencies for OpenMontage refactored pipeline
+
+# Core
+pyyaml>=6.0
+python-dotenv>=1.0
+
+# ML/AI frameworks
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Speech-to-text
+faster-whisper>=0.10.0
+openai-whisper>=20230314
+
+# Text-to-speech
+pyttsx3>=2.90
+
+# Image generation
+diffusers>=0.28.0
+transformers>=4.36.0
+pillow>=10.0
+
+# Video processing
+moviepy>=1.0.3
+ffmpeg-python>=0.2.1
+
+# Enhanced models
+basicsr>=1.4.2
+
+# Music generation
+scipy>=1.11.0
+
+# ComfyUI support
+aiohttp>=3.9.0
+
+# Utilities
+numpy>=1.24.0
+pydantic>=2.0
+requests>=2.31.0
+
+# Testing & development
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Optional: GPU acceleration
+# Uncomment one based on your setup:
+# xformers>=0.0.23  # For faster attention
+# bitsandbytes>=0.41.0  # For quantization (for NVIDIA GPUs)

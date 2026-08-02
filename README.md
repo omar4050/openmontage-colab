@@ -168,6 +168,13 @@ And when a run is done, hit **▶ REPLAY RUN** — the whole production replays 
 
 ## Quick Start
 
+### Google Colab (GPU) Quick Run
+A prebuilt Colab workflow is provided in docs/COLAB_INSTRUCTIONS.md. Use it to run the pipeline on a Colab GPU: it installs CUDA PyTorch, key ML packages, and runs a GPU-aware pipeline that prefers real adapters when available. Artifacts are written to projects/<project> and benchmarks to outputs/benchmarks/.
+
+See docs/COLAB_INSTRUCTIONS.md for exact notebook cells to paste into Colab.
+
+## Quick Start
+
 ### Prerequisites
 
 - **Python 3.10+** — [python.org](https://www.python.org/downloads/)

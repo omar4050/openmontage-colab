@@ -1,0 +1,51 @@
+# Model registry: primary, fallback, and mock for each abstraction
+planner:
+  primary: qwen3
+  fallback: qwen3-coder
+  vision_helpers:
+    - qwen3-vl
+    - qwen3-vl-embedding
+transcriber:
+  primary: faster-whisper
+  fallback: whisper
+  lightweight_fallback: whisper.cpp
+tts:
+  primary: cosyvoice-3.0
+  fallback: kokoro
+image_generation:
+  primary: qwen-image
+  fallback: flux.1
+video_generation:
+  primary: wan-2.2
+  fallback: ltx-2.3
+  heavy_fallback: hunyuanvideo-1.5
+montage:
+  primary: ffmpeg
+  fallback: remotion
+  lightweight_fallback: moviepy
+enhancement:
+  primary: real-esrgan
+  fallback: rife
+music:
+  primary: musicgen
+  fallback: stable-audio-open
+  small_fallback: stable-audio-open-small
+workflow:
+  primary: comfyui
+  note: "Used as an optional visual pipeline hub for image/video workflows"
+
+# Adapter-specific configuration (optional). Keys are model identifiers.
+adapters:
+  faster-whisper:
+    model: small
+  diffusers-sd:
+    model_id: runwayml/stable-diffusion-v1-5
+    torch_dtype: float16
+  whisper:
+    model: small
+
+# Local-first policy: prefer local and open-source models by default
+policy:
+  local_first: true
+  allow_cloud_providers: false
+  prefer_permissive_license: true
