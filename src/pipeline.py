@@ -1,4 +1,9 @@
-"""Simple modular pipeline runner with mock mode for OpenMontage."""
+"""Simple modular pipeline runner with mock mode for OpenMontage.
+
+NOTE: This module is a local smoke-test / mock runner. Production runs MUST go
+through the orchestrator preflight and pipeline manifest flow (see lib/orchestrator.py
+and AGENT_GUIDE.md Rule Zero).
+"""
 from pathlib import Path
 from .registry import load_registry
 from .selector import ModelSelector
