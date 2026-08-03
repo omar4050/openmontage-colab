@@ -5,6 +5,7 @@ import subprocess
 import json
 from pathlib import Path
 from typing import Optional, Dict, Any
+from src.validators import is_valid_video
 
 logger = logging.getLogger(__name__)
 
@@ -86,13 +87,25 @@ class FFmpegMontageEditor:
                 cmd.extend(["-i", audio_path, "-c:a", "aac", "-map", "0:v:0", "-map", "1:a:0"])
             
             subprocess.run(cmd, check=True, capture_output=True)
-            
-            return {
-                "output_path": output_path,
-                "clips_count": len(clips),
-                "audio_track": audio_path is not None,
-                "status": "success"
-            }
+            # Validate the produced artifact before claiming success
+            validation = is_valid_video(output_path)
+            if validation.get("valid"):
+                return {
+                    "output_path": output_path,
+                    "clips_count": len(clips),
+                    "audio_track": audio_path is not None,
+                    "status": "success",
+                    "validation": validation,
+                }
+            else:
+                logger.error("Montage created but failed validation: %s", validation)
+                return {
+                    "output_path": output_path,
+                    "clips_count": len(clips),
+                    "audio_track": audio_path is not None,
+                    "status": "failed_validation",
+                    "validation": validation,
+                }
         except Exception as e:
             logger.error(f"FFmpeg montage failed: {e}")
             return {

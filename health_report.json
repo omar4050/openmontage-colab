@@ -1,0 +1,231 @@
+{
+  "profile": "local-first",
+  "models": {
+    "comfyui": {
+      "model_id": "comfyui",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "deepseek-r1-distill": {
+      "model_id": "deepseek-r1-distill",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "distil-whisper": {
+      "model_id": "distil-whisper",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "faster-whisper": {
+      "model_id": "faster-whisper",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "ffmpeg": {
+      "model_id": "ffmpeg",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "flux.2-dev": {
+      "model_id": "flux.2-dev",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "flux.2-klein-4b": {
+      "model_id": "flux.2-klein-4b",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "gemma3-27b-it": {
+      "model_id": "gemma3-27b-it",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "hunyuanvideo-1.5": {
+      "model_id": "hunyuanvideo-1.5",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "kokoro-82m": {
+      "model_id": "kokoro-82m",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "ltx-video": {
+      "model_id": "ltx-video",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "moss-tts": {
+      "model_id": "moss-tts",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "moviepy": {
+      "model_id": "moviepy",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "musicgen": {
+      "model_id": "musicgen",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "parler-tts": {
+      "model_id": "parler-tts",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "qwen-image": {
+      "model_id": "qwen-image",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "qwen3": {
+      "model_id": "qwen3",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "real-esrgan": {
+      "model_id": "real-esrgan",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "remotion": {
+      "model_id": "remotion",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    },
+    "rife": {
+      "model_id": "rife",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "seamless-m4t-v2": {
+      "model_id": "seamless-m4t-v2",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "stable-audio-3-medium": {
+      "model_id": "stable-audio-3-medium",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "stable-audio-open-small": {
+      "model_id": "stable-audio-open-small",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": false,
+      "notes": [
+        "adapter_initialization_succeeded_but_unavailable"
+      ]
+    },
+    "wan2.2-ti2v-5b": {
+      "model_id": "wan2.2-ti2v-5b",
+      "configured": true,
+      "adapter_found": true,
+      "initializable": true,
+      "available": true,
+      "notes": []
+    }
+  }
+}

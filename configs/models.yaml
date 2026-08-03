@@ -1,51 +1,293 @@
-# Model registry: primary, fallback, and mock for each abstraction
+# Model registry: detailed local-first model options with metadata
+# Each capability lists multiple model options ordered by preference.
+# Selector/adapter should use `profiles` to pick among these (local-first, balanced, quality-first).
+
 planner:
-  primary: qwen3
-  fallback: qwen3-coder
-  vision_helpers:
-    - qwen3-vl
-    - qwen3-vl-embedding
+  models:
+    - id: qwen3
+      label: Qwen3 (default)
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 24
+        cpu_threads: 4
+      local_compatible: true
+      production_ready: true
+      adapter: planner_qwen3
+    - id: gemma3-27b-it
+      label: Gemma 3 27B IT
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 48
+      local_compatible: true
+      production_ready: false
+      adapter: planner_gemma3
+    - id: deepseek-r1-distill
+      label: DeepSeek-R1 Distill
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 8
+      local_compatible: true
+      production_ready: true
+      adapter: planner_deepseek
+  default_choice: qwen3
+
 transcriber:
-  primary: faster-whisper
-  fallback: whisper
-  lightweight_fallback: whisper.cpp
+  models:
+    - id: faster-whisper
+      label: faster-whisper (large-v3)
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 12
+      local_compatible: true
+      production_ready: true
+      adapter: faster-whisper
+      config:
+        model: large-v3
+    - id: distil-whisper
+      label: distil-large-v3.5
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 6
+      local_compatible: true
+      production_ready: true
+      adapter: faster-whisper
+      config:
+        model: distil-large-v3.5
+    - id: seamless-m4t-v2
+      label: SeamlessM4T v2
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 24
+      local_compatible: true
+      production_ready: true
+      adapter: transcriber_seamless
+  default_choice: faster-whisper
+
 tts:
-  primary: cosyvoice-3.0
-  fallback: kokoro
+  models:
+    - id: kokoro-82m
+      label: Kokoro 82M
+      tier: default
+      resources:
+        gpu: false
+        vram_gb: 4
+      local_compatible: true
+      production_ready: true
+      adapter: tts_kokoro
+    - id: moss-tts
+      label: MOSS-TTS
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 6
+      local_compatible: true
+      production_ready: false
+      adapter: tts_moss
+    - id: parler-tts
+      label: Parler-TTS
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 12
+      local_compatible: true
+      production_ready: false
+      adapter: tts_parler
+  default_choice: kokoro-82m
+
 image_generation:
-  primary: qwen-image
-  fallback: flux.1
+  models:
+    - id: flux.2-klein-4b
+      label: FLUX.2-klein-4B
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 10
+      local_compatible: true
+      production_ready: true
+      adapter: flux2_klein
+    - id: qwen-image
+      label: Qwen-Image
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 8
+      local_compatible: true
+      production_ready: true
+      adapter: qwen-image
+    - id: flux.2-dev
+      label: FLUX.2-dev
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 24
+      local_compatible: true
+      production_ready: false
+      adapter: flux2_dev
+  default_choice: flux.2-klein-4b
+
 video_generation:
-  primary: wan-2.2
-  fallback: ltx-2.3
-  heavy_fallback: hunyuanvideo-1.5
-montage:
-  primary: ffmpeg
-  fallback: remotion
-  lightweight_fallback: moviepy
-enhancement:
-  primary: real-esrgan
-  fallback: rife
+  models:
+    - id: wan2.2-ti2v-5b
+      label: Wan2.2-TI2V-5B
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 24
+      local_compatible: true
+      production_ready: true
+      adapter: wan-2.2
+    - id: ltx-video
+      label: LTX-Video
+      tier: lightweight
+      resources:
+        gpu: true
+        vram_gb: 12
+      local_compatible: true
+      production_ready: false
+      adapter: ltx-video
+    - id: hunyuanvideo-1.5
+      label: HunyuanVideo-1.5
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 48
+      local_compatible: true
+      production_ready: false
+      adapter: hunyuanvideo
+  default_choice: wan2.2-ti2v-5b
+
 music:
-  primary: musicgen
-  fallback: stable-audio-open
-  small_fallback: stable-audio-open-small
+  models:
+    - id: stable-audio-open-small
+      label: Stable Audio Open Small
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 6
+      local_compatible: true
+      production_ready: true
+      adapter: stable-audio
+    - id: musicgen
+      label: MusicGen (medium)
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 12
+      local_compatible: true
+      production_ready: true
+      adapter: musicgen
+    - id: stable-audio-3-medium
+      label: Stable Audio 3 Medium
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 24
+      local_compatible: true
+      production_ready: false
+      adapter: stable-audio
+  default_choice: musicgen
+
+montage:
+  models:
+    - id: ffmpeg
+      label: FFmpeg (native)
+      tier: default
+      resources:
+        gpu: false
+        vram_gb: 0
+      local_compatible: true
+      production_ready: true
+      adapter: ffmpeg
+    - id: moviepy
+      label: MoviePy (lightweight)
+      tier: lightweight
+      resources:
+        gpu: false
+        vram_gb: 0
+      local_compatible: true
+      production_ready: true
+      adapter: moviepy
+    - id: remotion
+      label: Remotion (premium runtime)
+      tier: premium
+      resources:
+        gpu: true
+        vram_gb: 8
+      local_compatible: true
+      production_ready: true
+      adapter: remotion
+  default_choice: ffmpeg
+
+enhancement:
+  models:
+    - id: real-esrgan
+      label: Real-ESRGAN
+      tier: default
+      resources:
+        gpu: true
+        vram_gb: 8
+      local_compatible: true
+      production_ready: true
+      adapter: real-esrgan
+    - id: rife
+      label: RIFE (interpolation)
+      tier: lightweight
+      resources:
+        gpu: true
+        vram_gb: 6
+      local_compatible: true
+      production_ready: true
+      adapter: rife
+  default_choice: real-esrgan
+
 workflow:
-  primary: comfyui
-  note: "Used as an optional visual pipeline hub for image/video workflows"
+  models:
+    - id: comfyui
+      label: ComfyUI
+      tier: default
+      resources:
+        gpu: false
+      local_compatible: true
+      production_ready: false
+      adapter: comfyui
+  default_choice: comfyui
 
 # Adapter-specific configuration (optional). Keys are model identifiers.
 adapters:
   faster-whisper:
-    model: small
+    model: large-v3
   diffusers-sd:
     model_id: runwayml/stable-diffusion-v1-5
     torch_dtype: float16
   whisper:
     model: small
 
+# Runtime selection profiles: how to pick among model tiers.
+profiles:
+  local-first:
+    prefer_tiers: [default, lightweight, premium]
+    allow_cloud: false
+  balanced:
+    prefer_tiers: [default, premium, lightweight]
+    allow_cloud: false
+  quality-first:
+    prefer_tiers: [premium, default, lightweight]
+    allow_cloud: false
+
+# Health-check settings
+health:
+  enable_probes: true
+  probe_timeout_s: 15
+
 # Local-first policy: prefer local and open-source models by default
 policy:
   local_first: true
   allow_cloud_providers: false
   prefer_permissive_license: true
+  profiles_default: local-first

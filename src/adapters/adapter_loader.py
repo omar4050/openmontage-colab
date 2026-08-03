@@ -9,21 +9,40 @@ from ..selector import ModelSelector
 log = logging.getLogger(__name__)
 
 # mapping from model identifiers to adapter module names (snake_case)
+# Include common aliases so the registry can use expressive ids while the
+# adapter loader maps them to actual adapter modules already present.
 MODEL_TO_ADAPTER = {
     "qwen3": ("planner_qwen3", "PlannerQwen3"),
+    "qwen-3": ("planner_qwen3", "PlannerQwen3"),
     "faster-whisper": ("transcriber_faster_whisper", "FasterWhisperTranscriber"),
     "faster_whisper": ("transcriber_faster_whisper", "FasterWhisperTranscriber"),
     "whisper": ("transcriber_whisper", "WhisperTranscriber"),
     "cosyvoice-3.0": ("tts_cosyvoice", "CosyVoiceTTS"),
+    "kokoro-82m": ("tts_cosyvoice", "CosyVoiceTTS"),
     "qwen-image": ("image_qwen", "QwenImageGenerator"),
+    "flux.2-klein-4b": ("adapter_stub", "ImageStub"),
+    "flux.2-dev": ("adapter_stub", "ImageStub"),
     "wan-2.2": ("video_wan", "WanVideoGenerator"),
+    "wan2.2-ti2v-5b": ("video_wan", "WanVideoGenerator"),
+    "ltx-video": ("adapter_stub", "VideoStub"),
     "ffmpeg": ("montage_ffmpeg", "FFmpegMontageEditor"),
     "moviepy": ("montage_ffmpeg", "MoviePyMontageEditor"),
-    "real-esrgan": ("enhancement_esrgan", "RealESRGANEnhancer"),
-    "rife": ("enhancement_esrgan", "RIFEInterpolator"),
+    "remotion": ("montage_ffmpeg", "MoviePyMontageEditor"),
+    "real-esrgan": ("adapter_stub", "EnhancerStub"),
+    "rife": ("adapter_stub", "EnhancerStub"),
     "musicgen": ("music_musicgen", "MusicGenMusicGenerator"),
     "stable-audio": ("music_musicgen", "StableAudioMusicGenerator"),
+    "stable-audio-open-small": ("adapter_stub", "MusicStub"),
+    "stable-audio-3-medium": ("adapter_stub", "MusicStub"),
     "comfyui": ("workflow_comfyui", "ComfyUIWorkflow"),
+    # planner/transcriber/tts aliases mapped to stubs when no real adapter exists yet
+    "deepseek-r1-distill": ("adapter_stub", "PlannerStub"),
+    "distil-whisper": ("adapter_stub", "TranscriberStub"),
+    "gemma3-27b-it": ("adapter_stub", "PlannerStub"),
+    "moss-tts": ("adapter_stub", "VoiceStub"),
+    "parler-tts": ("adapter_stub", "VoiceStub"),
+    "hunyuanvideo-1.5": ("adapter_stub", "VideoStub"),
+    "seamless-m4t-v2": ("adapter_stub", "TranscriberStub"),
 }
 
 

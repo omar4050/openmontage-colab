@@ -28,7 +28,9 @@ class Pipeline:
         self.selector = ModelSelector(self.registry)
         self.mock = mock
 
-        # Try to load real adapters via adapter_loader. Fall back to mocks when unavailable.
+        # Try to load real adapters via adapter_loader. When not in mock mode,
+        # do NOT silently return a mock if an adapter is missing. Instead return None
+        # so the caller can explicitly handle/announce missing capabilities.
         from .adapters.adapter_loader import get_component
 
         # helper to choose adapter or mock
@@ -37,7 +39,9 @@ class Pipeline:
                 return mock_cls("mock")
             comp = get_component(role, profile=("mock" if self.mock else "balanced"))
             if comp is None:
-                return mock_cls("mock")
+                # explicit: adapter absent in this environment
+                log.error("No adapter available for role '%s' under profile '%s'", role, ("mock" if self.mock else "balanced"))
+                return None
             return comp
 
         self.planner = _get("planner", MockPlanner)
@@ -48,6 +52,21 @@ class Pipeline:
         self.editor = _get("montage", MockEditor)
         self.enhancer = _get("enhancement", MockEnhancer)
         self.music = _get("music", MockMusic)
+
+        # If not in mock mode, fail fast and report missing adapters instead of continuing silently
+        if not self.mock:
+            missing = [name for name, comp in (
+                ("planner", self.planner),
+                ("transcriber", self.transcriber),
+                ("tts", self.voice),
+                ("image_generation", self.image),
+                ("video_generation", self.video),
+                ("montage", self.editor),
+                ("enhancement", self.enhancer),
+                ("music", self.music),
+            ) if comp is None]
+            if missing:
+                raise RuntimeError(f"Required adapters unavailable in this environment: {missing}")
 
     def run(self, title: str = "sample-project") -> Dict[str, Any]:
         project = PROJECTS_ROOT / title
